@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+       <meta charset="UTF-8">
+       <title>theTrack - helps you find the Track.</title>
+       <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+   </head>
+   <body>
+   <a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+      <div id="logo" class="logo">theTrack</div>
+      <div class="slogan">Find the best track of an artist, label, or music magazine.</div>    
+      <form id="searchtrack" class="searchbox" action="/thetrack" method="POST">
+          <input id="search" type="search" name="search" 
+          {% if artist %}
+            value="{{artist}}"
+          {% endif %}
+          placeholder="Search artist, label or magazine..." autofocus/>
+          <button type="submit" value="search">&nbsp;</button>
+      </form>
+    
+  <div class="wrapper" style="display:none;">
+    <div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+ 
+ <div id="trackplace" class="searchbox" style="width:450px; display:none;">
+ </div>
+
+<script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script> 
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+       $('#searchtrack').on('submit', function(event) {
+
+          $('.wrapper').show();
+          $('#trackplace').hide();
+          
+          var $form = $(this);
+    
+          $.ajax({
+              type: $form.attr('method'),
+              url: $form.attr('action'),
+              data: $form.serialize(),
+              success: function(data, status) {
+                    $('#trackplace').html(data);
+                    $('#trackplace').show()
+                    $('.wrapper').hide();
+              }
+          });
+  
+        event.preventDefault();
+    });
+
+});
+</script>
+</body>
+</html>
