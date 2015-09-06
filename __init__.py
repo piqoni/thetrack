@@ -70,16 +70,17 @@ def index():
 @app.route('/thetrack', methods=['POST'])
 def get_track():
     if request.method == 'POST':
-        artist = request.form['search']
-    if artist:
-        artist_link = get_artist_soundcloud_url(artist)
-        if artist_link:
-            track = build_tracks_dict(artist_link)
+        search = request.form['search']
+    if search:
+        if search.startswith('http'):
+            artist_username = search.strip("/").rsplit('/', 1)[1]
+        else:
+            artist_username = get_artist_soundcloud_url(search)
+        if artist_username:
+            track = build_tracks_dict(artist_username)
             return build_player_widget(track[0][0]) if track else 'No tracks were found'
         else:
             return 'No artist was found.'
-    else:
-        return False
 
 
 if __name__ == '__main__':
