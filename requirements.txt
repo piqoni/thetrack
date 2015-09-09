@@ -1,1 +1,2 @@
+Flask>=0.10.1
 -e git+https://github.com/soundcloud/soundcloud-python.git#egg=soundcloud
