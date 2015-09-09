@@ -1,0 +1,1 @@
+-e git+https://github.com/soundcloud/soundcloud-python.git#egg=soundcloud
