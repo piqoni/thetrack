@@ -18,7 +18,3 @@ Then, get your Client ID and create a file in project root called **credentials.
 # API credential
 id='YOUR_CLIENT_ID'
 ```
-
-## Running
-
-``` python __init__.py```
