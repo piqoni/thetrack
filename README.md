@@ -18,3 +18,9 @@ Then, get your Client ID and create a file in project root called **credentials.
 # API credential
 id='YOUR_CLIENT_ID'
 ```
+
+## Features / TODO
+
+* :white_check_mark: Search by artist name and get the best track
+* :white_check_mark: Searbh by artist soundcloud URL
+* :x: Suggest similar artists 
