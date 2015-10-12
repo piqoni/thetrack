@@ -25,12 +25,14 @@
       <div></div>
       <div></div>
       <div></div>
-      <div></div>
+      <div></div>-
     </div>
   </div>
  
  <div id="trackplace" class="searchbox" style="width:450px; display:none;">
  </div>
+
+ <div id="similartists" class="searchbox" style="width:450px; display:none;">
 
 <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script> 
 
@@ -53,11 +55,36 @@
                     $('#trackplace').html(data);
                     $('#trackplace').show()
                     $('.wrapper').hide();
+                  
+                  $.ajax({
+                      type: 'GET',
+                      url: '/similar/' + $('#search').val(),
+                      success: function(data, status) {
+                            if (data != "Couldn't find similar artists."){
+                              $('#similartists').show();
+                              var items = [];
+                              $.each(data.artists, function (id, artist) {
+                                  button = '<button class="similar" value="' + artist +'">' + artist + '</button>';
+                                  items.push(' ' + button + ' ');
+                              });  
+                              $('#similartists').html(items.join(' '));
+                            }
+
+                      }
+                  });
+                        
               }
           });
   
         event.preventDefault();
     });
+
+
+$(document.body).on('click', '.similar' ,function(){
+  $('#search').val($(this).val());
+  $("#searchtrack").submit();
+});
+
 
 });
 </script>

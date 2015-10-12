@@ -434,3 +434,22 @@ input[type="search"]:focus{
             transform: rotate(360deg);
   }
 }
+
+
+.similar {
+  color: #F50;
+  background: rgba(0,0,0,0);
+  border: solid 2px #FFCC99;
+  margin:3px;
+  cursor: pointer;
+}
+button:hover,
+button.hover {
+  border-color: #346392;
+  color: #346392;
+}
+button:active,
+button.active {
+  border-color: #27496d;
+  color: #27496d;
+}

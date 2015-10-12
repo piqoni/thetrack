@@ -1,12 +1,13 @@
 from __future__ import division
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import soundcloud
 import credentials
+from pyechonest import artist
 
 app = Flask(__name__)
 
 
-# API credentials
+# connect to Soundcloud API
 client = soundcloud.Client(
     client_id=credentials.id
 )
@@ -83,6 +84,21 @@ def get_track():
             return 'No artist was found.'
 
 
+@app.route('/similar/<artist_name>')
+def get_similar_artist(artist_name):
+    """
+    Get similar artists using echonest API
+    """
+    similar_list = []
+    try:
+        bk = artist.Artist(artist_name)
+    except:
+        return "Couldn't find similar artists."
+    for similar in bk.similar:
+        similar_list.append(similar.name)
+    return jsonify(artists=similar_list)
+
+
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0')
