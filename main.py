@@ -59,7 +59,7 @@ def build_tracks_dict(artist_permalink):
 
 
 def build_player_widget(track_url):
-    embed_info = client.get('/oembed', url=track_url)
+    embed_info = client.get('/oembed', url=track_url, auto_play=True)
     return embed_info.html
 
 
