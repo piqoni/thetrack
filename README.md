@@ -24,3 +24,4 @@ id='YOUR_CLIENT_ID'
 * :white_check_mark: Search by artist name and get the best track
 * :white_check_mark: Search by artist soundcloud URL
 * :white_check_mark: Suggest similar artists 
+* :x: Autoplay Mode (Play tracks of similar artists automatically)
