@@ -2,10 +2,12 @@ from __future__ import division
 from flask import Flask, render_template, request, jsonify
 import soundcloud
 import credentials
-from pyechonest import artist
+from pyechonest import artist, config
 
 app = Flask(__name__)
 
+
+config.ECHO_NEST_API_KEY=credentials.echo_nest_api_key
 
 # connect to Soundcloud API
 client = soundcloud.Client(

@@ -57,7 +57,7 @@ margin: 20px auto 100px auto;
  0 2px 4px 2px rgba(255, 255, 255, 0.83) inset;
 }
 input[type="search"]{
- width:365px;
+ width:382px;
  height:50px;
  font-size:20px;
  padding-left:15px;
@@ -452,4 +452,53 @@ button:active,
 button.active {
   border-color: #27496d;
   color: #27496d;
+}
+
+
+.onoffswitch { 
+    margin:0px auto;
+    margin-left:170px;
+    position: relative; width: 145px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Discovery ON";
+    padding-left: 10px;
+    background-color: #FF5500; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "Discovery OFF";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 20px; margin: 5px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 110px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
 }

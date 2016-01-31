@@ -17,7 +17,13 @@
           placeholder="Search artist, label or magazine..." autofocus/>
           <button type="submit" value="search">&nbsp;</button>
       </form>
-    
+    <div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+    </div>
   <div class="wrapper" style="display:none;">
     <div>
       <div></div>
@@ -34,56 +40,98 @@
  <div id="similartists" class="searchbox" style="width:450px; display:none;"></div>
 
 <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script> 
+<script src="https://w.soundcloud.com/player/api.js"></script> 
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
+$(document).ready(function() {
 
-       $('#searchtrack').on('submit', function(event) {
+var tracks_played = [];
+var artists_list = [];
 
-          $('.wrapper').show();
-          $('#trackplace').hide();
-          
-          var $form = $(this);
-    
-          $.ajax({
-              type: $form.attr('method'),
-              url: $form.attr('action'),
-              data: $form.serialize(),
-              success: function(data, status) {
-                    $('#trackplace').html(data);
-                    $('#trackplace').show()
-                    $('.wrapper').hide();
-                  
-                  $.ajax({
-                      type: 'GET',
-                      url: '/similar/' + $('#search').val(),
-                      success: function(data, status) {
-                            if (data != "Couldn't find similar artists."){
-                              $('#similartists').show();
-                              var items = [];
-                              $.each(data.artists, function (id, artist) {
-                                  button = '<button class="similar" value="' + artist +'">' + artist + '</button>';
-                                  items.push(' ' + button + ' ');
-                              });  
-                              $('#similartists').html(items.join(' '));
-                            }
 
-                      }
-                  });
-                        
-              }
-          });
-  
-        event.preventDefault();
+function playNextTrack(artists_list){
+    $.each(artists_list, function(index, artist_name){
+      if($.inArray(artist_name, tracks_played)==-1){
+        $('#search').val(artist_name);
+        $("#searchtrack").submit(); 
+        return false;
+      }
     });
+}
+
+
+$('#searchtrack').on('submit', function(event) {
+  var searched_artist = $('#search').val();
+  tracks_played.push(searched_artist)
+
+  $('.wrapper').show();
+  $('#trackplace').hide();
+
+  var $form = $(this);
+
+  $.ajax({
+  type: $form.attr('method'),
+  url: $form.attr('action'),
+  data: $form.serialize(),
+  success: function(data, status) {
+    if (data=='No tracks were found') {
+      if ( $('#myonoffswitch').is(':checked')){
+        playNextTrack(artists_list);
+      }
+    } else {
+      $('#trackplace').html(data);
+      $('#trackplace').show()
+      $('.wrapper').hide();
+
+      var widgetIframe = document.querySelector('iframe');
+      widget = SC.Widget(widgetIframe);
+
+      widget.bind(SC.Widget.Events.FINISH, function(player, data) {
+      if ($('#myonoffswitch').is(':checked')) {
+        playNextTrack(artists_list);     
+      }
+    });
+  }
+    $.ajax({
+      type: 'GET',
+      url: '/similar/' + searched_artist,
+      success: function(data, status) {
+        if (data != "Couldn't find similar artists."){
+          $('#similartists').show();
+          var buttons = [];
+          $.each(data.artists.reverse(), function (id, artist) {
+            button = '<button class="similar" value="' + artist +'">' + artist + '</button>';
+            buttons.unshift(' ' + button + ' ');
+            if($.inArray(artist, artists_list)<0) {
+              artists_list.unshift(artist);
+            } 
+          
+          });  
+
+          $('#similartists').html(buttons.join(' '));
+
+    
+        } else {
+          if ($('#myonoffswitch').is(':checked')) {
+            $('#similartists').show().html('We were not able to find similar artists. Discovery mode cannot continue.');
+          }
+        }
+
+      }
+    });
+
+}
+});
+
+event.preventDefault();
+});
 
 
 $(document.body).on('click', '.similar' ,function(){
   $('#search').val($(this).val());
   $("#searchtrack").submit();
 });
-
 
 });
 </script>
